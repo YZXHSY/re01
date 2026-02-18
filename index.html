@@ -1,40 +1,110 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--
+ * @Author: YZXHSY 251220155@smail.nju.edu.cn
+ * @Date: 2026-02-14 17:39:37
+ * @LastEditors: YZXHSY 251220155@smail.nju.edu.cn
+ * @LastEditTime: 2026-02-18 14:46:13
+ * @FilePath: \my_website\index.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!doctype html>
+<!--doc type-->
+<html lang="ch-CN">
+  <!--main language-->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-    <div style="
-        background-color: #f1f1f1;
-        text-align: center;
-        padding: 40px;
-        ">
-        <img src="https://kangwenchang.com/logo.png" alt="张忠灿" width="80px" height="80px">
+    <style>
+      body {
+        height: 100vh;
+        display: flex;
+        background-color: #eee;
+        font-size: medium;
+      }
+      * {
+        border: 1px solid black;
+      }
+      .flex {
+        display: flex;
+      }
+      .flex1 {
+        flex: 1;
+      }
+      .column {
+        flex-direction: column;
+      }
+      .row {
+        flex-direction: row;
+      }
+      .white {
+        background-color: #fff;
+      }
+      .mg8 {
+        margin: 8;
+      }
+      .mgr8 {
+        margin-right: 8;
+      }
+      .mgt8 {
+        margin-top: 8;
+      }
+      #one {
+        color: red;
+        font-size: medium;
+      }
+      .my_style {
+        color: black;
+        font-size: x-large;
+      }
+    </style>
+  </head>
+  <body class="flex">
+    <div style="text-align: center; padding: 20px" class="while">
+      <!--侧边栏-->
+      <img
+        src="pic/my_im
+      age.webp"
+        alt="zzc"
+        width="111px"
+        height="111px"
+      />
+      <p>我的网页</p>
+      <a href="/new_page.html"> 前往第二页</a>
     </div>
-    <div style="
-    max-width: 700px;
 
-    line-height: 1.7;
-    color:black;
-    padding:15px;
-    margin:30px auto;
-    ">
-      <p>我的网站</p>
-      <p>我的网站</p>
-      <p>我的网站</p>
-      <p>我的网站</p>
-      <p>我的网站</p>
+    <div class="flex1 flex column">
+      <!--主界面-->
+      <div style="height: 60px" class="white"><!--头部栏--></div>
+      <div class="flex flex1">
+        <div style="flex: 3" class="flex column">
+          <!--左区要规定为flex底下才能用flex分配-->
+          <!--左区-->
+          <div class="flex mg8">
+            <!--数据块-->
+            <div class="flex flex1" style="height: 100px"></div>
+            <div class="flex flex1" style="height: 100px"></div>
+            <div class="flex flex1" style="height: 100px"></div>
+          </div>
+          <div class="flex flex1 column mg8">
+            <!--列表区-->
+            <div class="flex flex1"></div>
+            <div class="flex flex1"></div>
+            <div class="flex flex1"></div>
+          </div>
+        </div>
+        <div style="flex: 1">
+          <!--右区-->
+          <div style="height: 150px" class="column">
+            <!--提示区-->
+          </div>
+          <div style="height: 300px" class="column">
+            <!--消息区-->
+          </div>
+        </div>
+      </div>
     </div>
-        <div style="
-        background-color: #f1f1f1;
-        text-align: center;
-        padding: 40px;
-        font-size: 12;
-        ">
-        <p>我的网页</p>
-    </div>
-</body>
+  </body>
 </html>
+<!--在 HTML 中，class属性可以同时写多个类名，
+只需要用空格隔开即可。浏览器会把这三个类的样式规则叠加应用到这个元素上。-->
+<!--横向默认，不用特别写-->
