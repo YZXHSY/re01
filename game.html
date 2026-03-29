@@ -2,7 +2,7 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>🎮 贪吃蛇</title>
     <style>
       * {
@@ -52,6 +52,7 @@
         border: 3px solid #00ff88;
         border-radius: 8px;
         box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+        touch-action: none;
       }
       .controls {
         color: #666;
@@ -102,6 +103,7 @@
         border-radius: 16px;
         text-align: center;
         border: 2px solid #ff4757;
+        z-index: 100;
       }
       #gameOver h2 {
         color: #ff4757;
@@ -112,9 +114,101 @@
         color: #888;
         margin-bottom: 24px;
       }
+      #rotateHint {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        color: #eee;
+      }
+      .rotate-icon {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 24px;
+        animation: rotatePhone 2s ease-in-out infinite;
+      }
+      .rotate-icon svg {
+        width: 100%;
+        height: 100%;
+        fill: #00ff88;
+      }
+      @keyframes rotatePhone {
+        0%, 100% { transform: rotate(0deg); }
+        50% { transform: rotate(90deg); }
+      }
+      .rotate-text {
+        font-size: 18px;
+        color: #888;
+        text-align: center;
+      }
+      .rotate-text-main {
+        font-size: 22px;
+        color: #eee;
+        margin-bottom: 8px;
+      }
+      @media (orientation: portrait) {
+        #rotateHint {
+          display: flex !important;
+        }
+        .container {
+          display: none !important;
+        }
+      }
+      @media (orientation: landscape) and (max-width: 768px) {
+        .container {
+          transform: scale(0.85);
+          padding: 16px;
+        }
+        h1 {
+          font-size: 22px;
+          margin-bottom: 12px;
+        }
+        .score-board {
+          margin-bottom: 12px;
+        }
+        .score-item {
+          font-size: 14px;
+        }
+        .score-item span {
+          font-size: 16px;
+        }
+        #gameCanvas {
+          margin-bottom: 12px;
+        }
+        .controls {
+          font-size: 12px;
+          margin-bottom: 12px;
+        }
+        button {
+          padding: 8px 16px;
+          font-size: 14px;
+        }
+      }
+      @media (max-width: 400px) {
+        .container {
+          transform: scale(0.75);
+        }
+      }
     </style>
   </head>
   <body>
+    <div id="rotateHint">
+      <div class="rotate-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M16.48 2.52c3.27 1.55 5.61 4.72 5.97 8.48h1.5C23.44 4.84 18.29 0 12 0l-.66.03 3.81 3.81 1.33-1.32zm-6.25-.77c-.59-.59-1.54-.59-2.12 0L1.75 8.11c-.59.59-.59 1.54 0 2.12l12.02 12.02c.59.59 1.54.59 2.12 0l6.36-6.36c.59-.59.59-1.54 0-2.12L10.23 1.75zm4.6 19.44L2.81 9.17l6.36-6.36 12.02 12.02-6.36 6.36zm-7.31.29l-3.81-3.81-.66.66c3.27-1.55 5.61-4.72 5.97-8.48H7.02c-.51 6.16-5.66 11-11.95 11l.66-.03-3.81 3.81 1.33 1.32z"/>
+        </svg>
+      </div>
+      <p class="rotate-text-main">请将手机横屏</p>
+      <p class="rotate-text">Rotate your device to landscape</p>
+    </div>
+
     <div class="container">
       <h1>🎮 贪吃蛇</h1>
       <div class="score-board">

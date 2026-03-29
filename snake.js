@@ -8,16 +8,24 @@ const finalScoreEl = document.getElementById('finalScore');
 const gridSize = 20;
 const tileCount = canvas.width / gridSize;
 
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+const baseSpeed = isMobile ? 200 : 150;
+const speedDecrement = isMobile ? 3 : 2;
+const minSpeed = isMobile ? 100 : 80;
+
 let snake = [];
 let food = {};
 let direction = { x: 1, y: 0 };
 let nextDirection = { x: 1, y: 0 };
 let score = 0;
 let highScore = localStorage.getItem('snakeHighScore') || 0;
-let gameSpeed = 150;
+let gameSpeed = baseSpeed;
 let gameLoop = null;
 let isPaused = false;
 let isGameOver = false;
+
+let touchStartX = 0;
+let touchStartY = 0;
 
 highScoreEl.textContent = highScore;
 
@@ -32,7 +40,7 @@ function initGame() {
   score = 0;
   isPaused = false;
   isGameOver = false;
-  gameSpeed = 150;
+  gameSpeed = baseSpeed;
   scoreEl.textContent = score;
   gameOverEl.style.display = 'none';
   generateFood();
@@ -117,6 +125,38 @@ function draw() {
   ctx.fill();
 }
 
+function playSound(type) {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    
+    const audioCtx = new AudioContext();
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    
+    if (type === 'eat') {
+      oscillator.frequency.value = 880;
+      oscillator.type = 'sine';
+      gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+      oscillator.start(audioCtx.currentTime);
+      oscillator.stop(audioCtx.currentTime + 0.1);
+    } else if (type === 'gameover') {
+      oscillator.frequency.value = 220;
+      oscillator.type = 'square';
+      gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+      oscillator.start(audioCtx.currentTime);
+      oscillator.stop(audioCtx.currentTime + 0.3);
+    }
+  } catch (e) {
+    console.log('Audio not supported');
+  }
+}
+
 function update() {
   if (isPaused || isGameOver) return;
 
@@ -140,6 +180,7 @@ function update() {
   snake.unshift(head);
 
   if (head.x === food.x && head.y === food.y) {
+    playSound('eat');
     score += 10;
     scoreEl.textContent = score;
     generateFood();
@@ -150,8 +191,8 @@ function update() {
       localStorage.setItem('snakeHighScore', highScore);
     }
     
-    if (gameSpeed > 80) {
-      gameSpeed -= 2;
+    if (gameSpeed > minSpeed) {
+      gameSpeed -= speedDecrement;
       clearInterval(gameLoop);
       gameLoop = setInterval(step, gameSpeed);
     }
@@ -167,6 +208,7 @@ function step() {
 
 function endGame() {
   isGameOver = true;
+  playSound('gameover');
   clearInterval(gameLoop);
   finalScoreEl.textContent = score;
   gameOverEl.style.display = 'block';
@@ -210,6 +252,59 @@ document.addEventListener('keydown', (e) => {
       break;
   }
 });
+
+if (isMobile) {
+  canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: false });
+
+  canvas.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+  }, { passive: false });
+
+  canvas.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    if (!touchStartX || !touchStartY) return;
+    if (isPaused || isGameOver) {
+      touchStartX = 0;
+      touchStartY = 0;
+      return;
+    }
+
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+
+    const diffX = touchEndX - touchStartX;
+    const diffY = touchEndY - touchStartY;
+
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 30 && direction.x !== -1) {
+        nextDirection = { x: 1, y: 0 };
+      } else if (diffX < -30 && direction.x !== 1) {
+        nextDirection = { x: -1, y: 0 };
+      }
+    } else {
+      if (diffY > 30 && direction.y !== -1) {
+        nextDirection = { x: 0, y: 1 };
+      } else if (diffY < -30 && direction.y !== 1) {
+        nextDirection = { x: 0, y: -1 };
+      }
+    }
+
+    touchStartX = 0;
+    touchStartY = 0;
+  }, { passive: false });
+
+  canvas.addEventListener('click', () => {
+    if (isGameOver) {
+      restartGame();
+    } else {
+      isPaused = !isPaused;
+    }
+  });
+}
 
 initGame();
 gameLoop = setInterval(step, gameSpeed);
