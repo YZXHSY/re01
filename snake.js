@@ -306,5 +306,34 @@ if (isMobile) {
   });
 }
 
+function hideRotateHint() {
+  const hint = document.getElementById('rotateHint');
+  if (hint) {
+    hint.classList.remove('show');
+  }
+}
+
+function checkOrientation() {
+  const hint = document.getElementById('rotateHint');
+  const isLandscape = window.innerWidth > window.innerHeight;
+  
+  if (hint) {
+    if (isLandscape) {
+      hint.classList.remove('show');
+    } else {
+      hint.classList.add('show');
+    }
+  }
+}
+
+if (isMobile) {
+  checkOrientation();
+  setInterval(checkOrientation, 300);
+  window.addEventListener('resize', checkOrientation);
+  window.addEventListener('orientationchange', () => {
+    setTimeout(checkOrientation, 100);
+  });
+}
+
 initGame();
 gameLoop = setInterval(step, gameSpeed);

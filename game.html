@@ -128,6 +128,9 @@
         z-index: 1000;
         color: #eee;
       }
+      #rotateHint.show {
+        display: flex;
+      }
       .rotate-icon {
         width: 80px;
         height: 80px;
@@ -153,13 +156,20 @@
         color: #eee;
         margin-bottom: 8px;
       }
-      @media (orientation: portrait) {
-        #rotateHint {
-          display: flex !important;
-        }
-        .container {
-          display: none !important;
-        }
+      .btn-continue {
+        margin-top: 24px;
+        padding: 12px 32px;
+        background: #00ff88;
+        color: #0f0f23;
+        border: none;
+        border-radius: 8px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .btn-continue:hover {
+        background: #00cc6a;
+        transform: scale(1.05);
       }
       @media (orientation: landscape) and (max-width: 768px) {
         .container {
@@ -207,6 +217,7 @@
       </div>
       <p class="rotate-text-main">请将手机横屏</p>
       <p class="rotate-text">Rotate your device to landscape</p>
+      <button class="btn-continue" onclick="hideRotateHint()">继续游戏</button>
     </div>
 
     <div class="container">
