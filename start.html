@@ -1,113 +1,590 @@
-<!--
- * @Author: YZXHSY 251220155@smail.nju.edu.cn
- * @Date: 2026-02-20 13:19:14
- * @LastEditors: YZXHSY 251220155@smail.nju.edu.cn
- * @LastEditTime: 2026-02-20 13:50:37
- * @FilePath: \my_website\start.html
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
+<!DOCTYPE html>
 <html lang="zh-CN">
   <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>当前要事v1</title>
-    <meta
-      name="description"
-      content="记录和提醒当前最重要的事，可以设置为浏览器起始页tab"
-    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>任务管理器</title>
     <style>
-      body {
+      * {
         margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #eee;
+      }
+      .container {
         display: flex;
-        align-items: center;
-        justify-content: center;
         height: 100vh;
-        background-image: url("bg.jpg");
-        background-size: cover;
-        background-position: center center;
-        background-repeat: no-repeat;
+        gap: 20px;
+        padding: 20px;
       }
-      .box {
+      .panel {
+        background: rgba(15, 15, 35, 0.8);
+        border-radius: 16px;
+        padding: 20px;
+        backdrop-filter: blur(10px);
+      }
+      .left-panel {
+        flex: 1;
+        max-width: 350px;
+      }
+      .center-panel {
+        flex: 1.5;
+      }
+      .right-panel {
+        flex: 1;
+        max-width: 350px;
+      }
+      .panel-title {
+        font-size: 20px;
+        margin-bottom: 16px;
+        color: #00ff88;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .add-form {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .add-form input {
+        flex: 1;
+        padding: 10px 14px;
+        border: 2px solid #333;
+        border-radius: 8px;
+        background: #1a1a2e;
+        color: #eee;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.3s;
+      }
+      .add-form input:focus {
+        border-color: #00ff88;
+      }
+      .add-form button {
+        padding: 10px 16px;
+        background: #00ff88;
+        color: #0f0f23;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s;
+      }
+      .add-form button:hover {
+        background: #00cc6a;
+        transform: translateY(-2px);
+      }
+      .todo-list {
+        list-style: none;
+        max-height: calc(100vh - 200px);
+        overflow-y: auto;
+      }
+      .todo-list li {
+        display: flex;
+        align-items: center;
+        padding: 12px;
+        background: rgba(26, 26, 46, 0.6);
+        border-radius: 8px;
+        margin-bottom: 8px;
+        transition: all 0.3s;
+      }
+      .todo-list li:hover {
+        background: rgba(26, 26, 46, 0.9);
+      }
+      .todo-list li.completed {
+        opacity: 0.5;
+        text-decoration: line-through;
+      }
+      .todo-list li .checkbox {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #00ff88;
+        border-radius: 4px;
+        margin-right: 12px;
+        cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
+        transition: all 0.3s;
       }
-      #shuRuKuang {
-        border: 0;
-        border-bottom: 2px solid #fff;
-        padding: 4px 2px;
-        display: block;
-        background: 0;
-        line-height: 1.5;
-        outline: none;
-        text-align: center;
-        transition: border-color 0.2s ease-in-out;
-        border-radius: 0;
+      .todo-list li .checkbox.checked {
+        background: #00ff88;
+      }
+      .todo-list li .checkbox.checked::after {
+        content: '✓';
+        color: #0f0f23;
+        font-weight: bold;
+      }
+      .todo-list li .text {
+        flex: 1;
+        word-break: break-word;
+      }
+      .todo-list li .delete-btn {
+        padding: 4px 10px;
+        background: #ff4757;
         color: #fff;
-        font-size: 2rem;
-        max-width: 90%;
-      }
-
-      #anNiu {
-        margin-left: -50px;
-        margin-right: 10px;
-        color: #ccc;
-        border-radius: 50%;
-        height: 40px;
-        width: 40px;
-        text-align: center;
-        line-height: 30px;
+        border: none;
+        border-radius: 4px;
         cursor: pointer;
+        font-size: 12px;
+        opacity: 0;
+        transition: all 0.3s;
       }
-
-      input::placeholder {
-        color: #ccc;
+      .todo-list li:hover .delete-btn {
+        opacity: 1;
       }
-      input::-webkit-input-placeholder {
-        color: #ccc;
+      .todo-list li .delete-btn:hover {
+        background: #ff6b7a;
+      }
+      .date-selector {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+        align-items: center;
+      }
+      .date-selector input[type="date"] {
+        padding: 10px 14px;
+        border: 2px solid #333;
+        border-radius: 8px;
+        background: #1a1a2e;
+        color: #eee;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.3s;
+        flex: 1;
+      }
+      .date-selector input[type="date"]:focus {
+        border-color: #00ff88;
+      }
+      .date-selector button {
+        padding: 10px 16px;
+        background: #00ff88;
+        color: #0f0f23;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s;
+      }
+      .date-selector button:hover {
+        background: #00cc6a;
+      }
+      .today-btn {
+        padding: 10px 16px;
+        background: #333;
+        color: #eee;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .today-btn:hover {
+        background: #444;
+      }
+      .calendar {
+        margin-top: 20px;
+      }
+      .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+      .calendar-header h3 {
+        font-size: 18px;
+        color: #00ff88;
+      }
+      .calendar-nav {
+        display: flex;
+        gap: 8px;
+      }
+      .calendar-nav button {
+        padding: 8px 12px;
+        background: #333;
+        color: #eee;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .calendar-nav button:hover {
+        background: #444;
+      }
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+      }
+      .calendar-day-header {
+        text-align: center;
+        padding: 8px;
+        font-size: 12px;
+        color: #888;
+      }
+      .calendar-day {
+        aspect-ratio: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 14px;
+        position: relative;
+      }
+      .calendar-day:hover {
+        background: rgba(0, 255, 136, 0.2);
+      }
+      .calendar-day.other-month {
+        color: #444;
+      }
+      .calendar-day.today {
+        background: rgba(0, 255, 136, 0.3);
+        border: 2px solid #00ff88;
+      }
+      .calendar-day.selected {
+        background: rgba(0, 255, 136, 0.5);
+      }
+      .calendar-day.has-tasks::after {
+        content: '';
+        width: 6px;
+        height: 6px;
+        background: #ff6b6b;
+        border-radius: 50%;
+        position: absolute;
+        bottom: 4px;
+      }
+      .stats {
+        margin-top: 20px;
+        padding: 16px;
+        background: rgba(26, 26, 46, 0.6);
+        border-radius: 12px;
+      }
+      .stats-title {
+        font-size: 16px;
+        color: #888;
+        margin-bottom: 12px;
+      }
+      .stats-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid #333;
+      }
+      .stats-item:last-child {
+        border-bottom: none;
+      }
+      .stats-value {
+        color: #00ff88;
+        font-weight: bold;
+      }
+      .empty-state {
+        text-align: center;
+        color: #666;
+        padding: 40px 20px;
+      }
+      .empty-state span {
+        font-size: 48px;
+        display: block;
+        margin-bottom: 16px;
+      }
+      @media (max-width: 1024px) {
+        .container {
+          flex-direction: column;
+          height: auto;
+          min-height: 100vh;
+        }
+        .left-panel, .center-panel, .right-panel {
+          max-width: none;
+          flex: none;
+        }
+        .todo-list {
+          max-height: 300px;
+        }
       }
     </style>
   </head>
-
   <body>
-    <div class="box">
-      <input
-        placeholder="最重要的事？"
-        id="shuRuKuang"
-        style="border-bottom-color: transparent"
-      />
-      <span id="anNiu" onclick="change()">✔</span>
+    <div class="container">
+      <div class="left-panel panel">
+        <div class="panel-title">🎯 长期目标</div>
+        <div class="add-form">
+          <input type="text" id="goalInput" placeholder="添加新目标..." onkeypress="if(event.key==='Enter')addGoal()">
+          <button onclick="addGoal()">添加</button>
+        </div>
+        <ul class="todo-list" id="goalsList"></ul>
+        <div class="stats">
+          <div class="stats-title">📊 统计</div>
+          <div class="stats-item">
+            <span>总目标</span>
+            <span class="stats-value" id="totalGoals">0</span>
+          </div>
+          <div class="stats-item">
+            <span>已完成</span>
+            <span class="stats-value" id="completedGoals">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="center-panel panel">
+        <div class="panel-title">📋 每日任务</div>
+        <div class="date-selector">
+          <input type="date" id="taskDate">
+          <button class="today-btn" onclick="goToToday()">今天</button>
+        </div>
+        <div class="add-form">
+          <input type="text" id="taskInput" placeholder="添加任务..." onkeypress="if(event.key==='Enter')addTask()">
+          <button onclick="addTask()">添加</button>
+        </div>
+        <ul class="todo-list" id="tasksList"></ul>
+        <div class="stats">
+          <div class="stats-title">📊 今日统计</div>
+          <div class="stats-item">
+            <span>总任务</span>
+            <span class="stats-value" id="totalTasks">0</span>
+          </div>
+          <div class="stats-item">
+            <span>已完成</span>
+            <span class="stats-value" id="completedTasks">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-panel panel">
+        <div class="panel-title">📅 日历</div>
+        <div class="calendar">
+          <div class="calendar-header">
+            <h3 id="calendarMonth">2024年3月</h3>
+            <div class="calendar-nav">
+              <button onclick="changeMonth(-1)">◀</button>
+              <button onclick="changeMonth(1)">▶</button>
+            </div>
+          </div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+      </div>
     </div>
+
     <script>
-      let youShi = false;
+      let goals = JSON.parse(localStorage.getItem('goals')) || [];
+      let tasks = JSON.parse(localStorage.getItem('tasks')) || {};
+      let selectedDate = new Date().toISOString().split('T')[0];
+      let currentMonth = new Date();
+      const weekDays = ['日', '一', '二', '三', '四', '五', '六'];
 
-      function change() {
-        let anNiu = document.getElementById("anNiu");
-        let shuRuKuang = document.getElementById("shuRuKuang");
-        shuRuKuang.readOnly = false;
+      document.getElementById('taskDate').value = selectedDate;
+      document.getElementById('taskDate').max = '2099-12-31';
 
-        if (youShi) {
-          youShi = false;
-          anNiu.innerText = "✔";
-          shuRuKuang.style.borderBottomColor = "#fff";
-          shuRuKuang.value = "";
-          shuRuKuang.readOnly = false;
-          window.localStorage.removeItem("shi");
-        } else {
-          youShi = true;
-          anNiu.innerText = "✘";
-          shuRuKuang.style.borderBottomColor = "transparent";
-          shuRuKuang.readOnly = true;
-          window.localStorage.setItem("shi", shuRuKuang.value);
+      function saveGoals() {
+        localStorage.setItem('goals', JSON.stringify(goals));
+      }
+
+      function saveTasks() {
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+      }
+
+      function addGoal() {
+        const input = document.getElementById('goalInput');
+        const text = input.value.trim();
+        if (!text) return;
+        
+        goals.push({ id: Date.now(), text, completed: false });
+        input.value = '';
+        saveGoals();
+        renderGoals();
+      }
+
+      function toggleGoal(id) {
+        const goal = goals.find(g => g.id === id);
+        if (goal) {
+          goal.completed = !goal.completed;
+          saveGoals();
+          renderGoals();
         }
       }
-      let data = window.localStorage.getItem("shi");
-      if (data) {
-        document.getElementById("shuRuKuang").value = data;
-        change();
+
+      function deleteGoal(id) {
+        goals = goals.filter(g => g.id !== id);
+        saveGoals();
+        renderGoals();
       }
+
+      function renderGoals() {
+        const list = document.getElementById('goalsList');
+        const totalEl = document.getElementById('totalGoals');
+        const completedEl = document.getElementById('completedGoals');
+
+        totalEl.textContent = goals.length;
+        completedEl.textContent = goals.filter(g => g.completed).length;
+
+        if (goals.length === 0) {
+          list.innerHTML = '<div class="empty-state"><span>🎯</span>暂无长期目标<br>添加你的第一个目标吧</div>';
+          return;
+        }
+
+        list.innerHTML = goals.map(goal => `
+          <li class="${goal.completed ? 'completed' : ''}">
+            <div class="checkbox ${goal.completed ? 'checked' : ''}" onclick="toggleGoal(${goal.id})"></div>
+            <span class="text">${escapeHtml(goal.text)}</span>
+            <button class="delete-btn" onclick="deleteGoal(${goal.id})">删除</button>
+          </li>
+        `).join('');
+      }
+
+      function addTask() {
+        const input = document.getElementById('taskInput');
+        const text = input.value.trim();
+        if (!text) return;
+        
+        if (!tasks[selectedDate]) {
+          tasks[selectedDate] = [];
+        }
+        
+        tasks[selectedDate].push({ id: Date.now(), text, completed: false });
+        input.value = '';
+        saveTasks();
+        renderTasks();
+        renderCalendar();
+      }
+
+      function toggleTask(id) {
+        const dateTasks = tasks[selectedDate];
+        if (dateTasks) {
+          const task = dateTasks.find(t => t.id === id);
+          if (task) {
+            task.completed = !task.completed;
+            saveTasks();
+            renderTasks();
+            renderCalendar();
+          }
+        }
+      }
+
+      function deleteTask(id) {
+        if (tasks[selectedDate]) {
+          tasks[selectedDate] = tasks[selectedDate].filter(t => t.id !== id);
+          if (tasks[selectedDate].length === 0) {
+            delete tasks[selectedDate];
+          }
+          saveTasks();
+          renderTasks();
+          renderCalendar();
+        }
+      }
+
+      function renderTasks() {
+        const list = document.getElementById('tasksList');
+        const dateTasks = tasks[selectedDate] || [];
+        const totalEl = document.getElementById('totalTasks');
+        const completedEl = document.getElementById('completedTasks');
+
+        totalEl.textContent = dateTasks.length;
+        completedEl.textContent = dateTasks.filter(t => t.completed).length;
+
+        if (dateTasks.length === 0) {
+          list.innerHTML = '<div class="empty-state"><span>📋</span>该日期暂无任务<br>添加你的第一个任务吧</div>';
+          return;
+        }
+
+        list.innerHTML = dateTasks.map(task => `
+          <li class="${task.completed ? 'completed' : ''}">
+            <div class="checkbox ${task.completed ? 'checked' : ''}" onclick="toggleTask(${task.id})"></div>
+            <span class="text">${escapeHtml(task.text)}</span>
+            <button class="delete-btn" onclick="deleteTask(${task.id})">删除</button>
+          </li>
+        `).join('');
+      }
+
+      function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      function goToToday() {
+        selectedDate = new Date().toISOString().split('T')[0];
+        document.getElementById('taskDate').value = selectedDate;
+        renderTasks();
+        renderCalendar();
+      }
+
+      function changeMonth(delta) {
+        currentMonth.setMonth(currentMonth.getMonth() + delta);
+        renderCalendar();
+      }
+
+      function selectDate(dateStr) {
+        selectedDate = dateStr;
+        document.getElementById('taskDate').value = selectedDate;
+        renderTasks();
+        renderCalendar();
+      }
+
+      function renderCalendar() {
+        const grid = document.getElementById('calendarGrid');
+        const monthLabel = document.getElementById('calendarMonth');
+        
+        const year = currentMonth.getFullYear();
+        const month = currentMonth.getMonth();
+        monthLabel.textContent = `${year}年${month + 1}月`;
+
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const startDay = firstDay.getDay();
+        const daysInMonth = lastDay.getDate();
+
+        const today = new Date().toISOString().split('T')[0];
+        let html = weekDays.map(d => `<div class="calendar-day-header">${d}</div>`).join('');
+
+        const prevMonth = new Date(year, month, 0);
+        const prevDays = prevMonth.getDate();
+        for (let i = startDay - 1; i >= 0; i--) {
+          const day = prevDays - i;
+          const dateStr = `${prevMonth.getFullYear()}-${String(prevMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+          html += `<div class="calendar-day other-month" onclick="selectDate('${dateStr}')">${day}</div>`;
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+          const hasTasks = tasks[dateStr] && tasks[dateStr].length > 0;
+          const isToday = dateStr === today;
+          const isSelected = dateStr === selectedDate;
+          
+          let classes = 'calendar-day';
+          if (isToday) classes += ' today';
+          if (isSelected) classes += ' selected';
+          if (hasTasks) classes += ' has-tasks';
+          
+          html += `<div class="${classes}" onclick="selectDate('${dateStr}')">${day}</div>`;
+        }
+
+        const totalCells = startDay + daysInMonth;
+        const remaining = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+        const nextMonth = new Date(year, month + 1, 1);
+        for (let day = 1; day <= remaining; day++) {
+          const dateStr = `${nextMonth.getFullYear()}-${String(nextMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+          html += `<div class="calendar-day other-month" onclick="selectDate('${dateStr}')">${day}</div>`;
+        }
+
+        grid.innerHTML = html;
+      }
+
+      document.getElementById('taskDate').addEventListener('change', (e) => {
+        selectedDate = e.target.value;
+        renderTasks();
+        renderCalendar();
+      });
+
+      renderGoals();
+      renderTasks();
+      renderCalendar();
     </script>
   </body>
 </html>
