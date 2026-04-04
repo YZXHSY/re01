@@ -1,58 +1,91 @@
-<!doctype html>
-<html lang="ch-CN">
+<!DOCTYPE html>
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      body {
-        margin: 0;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #4bc0c8, #c779d0, #feac5e);
-      }
-      .box {
-        height: 80vh;
-        width: 60vh;
-        display: flex;
-        max-width: 600px;
-        align-items: flex-start;
-        justify-content: flex-start;
-        padding: 30px;
-        background-color: #fff;
-        color: #333;
-        font-size: large;
-        overflow-y: scroll;
-        flex-direction: column;
-        line-height: 1.7;
-        font-family: "思源黑体";
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-      }
-      .box::-webkit-scrollbar {
-        display: none; /* Chrome Safari */
-      }
-    </style>
+    <title>工具箱</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="box">
-      <p>列位诸公，随我征战</p>
-      <p>我打了一辈子仗，就不能享受享受吗？</p>
-      <p>接着奏乐，接着舞！</p>
-      <p>吃什么</p>
-      <p>是啊，吃什么</p>
-      <p>八万个馒头</p>
-      <p>好啊，你吃馒头我也吃馒头</p>
-      <p>不可能，绝对不可能</p>
-      <p>咱家说了，咱家不怕酸</p>
-      <p>孔明号卧龙</p>
-      <p>龙，可是帝王之征啊！</p>
-      <p>赵云字子龙</p>
-      <p>龙，可是帝王之征啊！</p>
-      <p>某刀号青龙</p>
-      <p>龙，可是帝王之征啊！</p>
-    </div>
+    <nav class="navbar">
+      <div class="container">
+        <a href="index.html" class="logo">🛠️ 工具箱</a>
+        <div class="nav-links">
+          <a href="index.html" class="nav-link">首页</a>
+          <a href="start.html" class="nav-link">任务管理</a>
+          <a href="game.html" class="nav-link">游戏</a>
+          <a href="new_page.html" class="nav-link active">工具箱</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="main-content">
+      <div class="container">
+        <div class="hero">
+          <h1>常用工具</h1>
+          <p>快速访问常用网站和工具</p>
+        </div>
+
+        <h2 class="section-title">🔧 实用工具</h2>
+        <div class="cards-grid">
+          <a href="https://github.com" target="_blank" class="card">
+            <div class="card-icon">🐙</div>
+            <div class="card-title">GitHub</div>
+            <div class="card-desc">代码托管平台</div>
+          </a>
+          <a href="https://stackoverflow.com" target="_blank" class="card">
+            <div class="card-icon">💬</div>
+            <div class="card-title">Stack Overflow</div>
+            <div class="card-desc">技术问答社区</div>
+          </a>
+          <a href="https://www.google.com" target="_blank" class="card">
+            <div class="card-icon">🔍</div>
+            <div class="card-title">Google</div>
+            <div class="card-desc">搜索引擎</div>
+          </a>
+          <a href="https://www.bilibili.com" target="_blank" class="card">
+            <div class="card-icon">📺</div>
+            <div class="card-title">哔哩哔哩</div>
+            <div class="card-desc">视频弹幕网站</div>
+          </a>
+          <a href="https://www.zhihu.com" target="_blank" class="card">
+            <div class="card-icon">💡</div>
+            <div class="card-title">知乎</div>
+            <div class="card-desc">问答社区</div>
+          </a>
+          <a href="https://web.telegram.org" target="_blank" class="card">
+            <div class="card-icon">✈️</div>
+            <div class="card-title">Telegram</div>
+            <div class="card-desc">即时通讯</div>
+          </a>
+        </div>
+
+        <h2 class="section-title">📁 我的收藏</h2>
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>💻 开发工具</h3>
+            <p>VS Code · Git · Docker · Node.js</p>
+          </div>
+          <div class="info-card">
+            <h3>📚 学习资源</h3>
+            <p>MDN · W3Schools · LeetCode</p>
+          </div>
+          <div class="info-card">
+            <h3>☁️ 云服务</h3>
+            <p>AWS · Vercel · Netlify</p>
+          </div>
+          <div class="info-card">
+            <h3>🎨 设计资源</h3>
+            <p>Figma · Unsplash · iconfont</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>© 2024 工具箱 · 基于 GitHub Pages 构建</p>
+      </div>
+    </footer>
   </body>
 </html>

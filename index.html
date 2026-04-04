@@ -1,114 +1,94 @@
-<!--
- * @Author: YZXHSY 251220155@smail.nju.edu.cn
- * @Date: 2026-02-14 17:39:37
- * @LastEditors: YZXHSY 251220155@smail.nju.edu.cn
- * @LastEditTime: 2026-02-18 14:46:13
- * @FilePath: \my_website\index.html
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
-<!doctype html>
-<!--doc type-->
-<html lang="ch-CN">
-  <!--main language-->
+<!DOCTYPE html>
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      body {
-        height: 100vh;
-        display: flex;
-        background-color: #eee;
-        font-size: medium;
-      }
-      * {
-        border: 1px solid black;
-      }
-      .flex {
-        display: flex;
-      }
-      .flex1 {
-        flex: 1;
-      }
-      .column {
-        flex-direction: column;
-      }
-      .row {
-        flex-direction: row;
-      }
-      .white {
-        background-color: #fff;
-      }
-      .mg8 {
-        margin: 8;
-      }
-      .mgr8 {
-        margin-right: 8;
-      }
-      .mgt8 {
-        margin-top: 8;
-      }
-      #one {
-        color: red;
-        font-size: medium;
-      }
-      .my_style {
-        color: black;
-        font-size: x-large;
-      }
-    </style>
+    <title>个人主页</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
-  <body class="flex">
-    <div style="text-align: center; padding: 20px" class="while">
-      <!--侧边栏-->
-      <img
-        src="pic/my_image.webp"
-        alt="zzc"
-        width="111px"
-        height="111px"
-      />
-      <p>我的网页</p>
-      <a href="new_page.html"> 三军听令</a>
-      <a href="start.html"> 每日必做清单</a>
-      <a href="game.html"> 🎮 贪吃蛇</a>
-    </div>
-
-    <div class="flex1 flex column">
-      <!--主界面-->
-      <div style="height: 60px" class="white"><!--头部栏--></div>
-      <div class="flex flex1">
-        <div style="flex: 3" class="flex column">
-          <!--左区要规定为flex底下才能用flex分配-->
-          <!--左区-->
-          <div class="flex mg8">
-            <!--数据块-->
-            <div class="flex flex1" style="height: 100px"></div>
-            <div class="flex flex1" style="height: 100px"></div>
-            <div class="flex flex1" style="height: 100px"></div>
-          </div>
-          <div class="flex flex1 column mg8">
-            <!--列表区-->
-            <div class="flex flex1"></div>
-            <div class="flex flex1"></div>
-            <div class="flex flex1"></div>
-          </div>
+  <body>
+    <nav class="navbar">
+      <div class="container">
+        <a href="index.html" class="logo">🏠 我的主页</a>
+        <div class="nav-links">
+          <a href="index.html" class="nav-link active">首页</a>
+          <a href="start.html" class="nav-link">任务管理</a>
+          <a href="game.html" class="nav-link">游戏</a>
+          <a href="new_page.html" class="nav-link">工具箱</a>
         </div>
-        <div style="flex: 1">
-          <!--右区-->
-          <div style="height: 150px" class="column">
-            <!--提示区-->
+      </div>
+    </nav>
+
+    <main class="main-content">
+      <div class="container">
+        <div class="hero">
+          <h1>欢迎回来！</h1>
+          <p>这里是您的个人导航主页</p>
+        </div>
+
+        <h2 class="section-title">🚀 快捷入口</h2>
+        <div class="cards-grid">
+          <a href="start.html" class="card">
+            <div class="card-icon">📋</div>
+            <div class="card-title">任务管理</div>
+            <div class="card-desc">管理长期目标和每日任务</div>
+          </a>
+          <a href="game.html" class="card">
+            <div class="card-icon">🎮</div>
+            <div class="card-title">贪吃蛇游戏</div>
+            <div class="card-desc">经典小游戏，放松一下吧</div>
+          </a>
+          <a href="new_page.html" class="card">
+            <div class="card-icon">🛠️</div>
+            <div class="card-title">工具箱</div>
+            <div class="card-desc">常用工具和链接集合</div>
+          </a>
+        </div>
+
+        <h2 class="section-title">📊 今日概览</h2>
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>📝 今日任务</h3>
+            <p id="todayTask">暂无任务</p>
           </div>
-          <div style="height: 300px" class="column">
-            <!--消息区-->
+          <div class="info-card">
+            <h3>🎯 长期目标进度</h3>
+            <p id="goalProgress">暂无目标</p>
+          </div>
+          <div class="info-card">
+            <h3>📅 当前日期</h3>
+            <p id="currentDate"></p>
           </div>
         </div>
       </div>
-    </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>© 2024 个人主页 · 基于 GitHub Pages 构建</p>
+      </div>
+    </footer>
+
+    <script>
+      const date = new Date();
+      const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+      document.getElementById('currentDate').textContent = date.toLocaleDateString('zh-CN', options);
+
+      const tasks = JSON.parse(localStorage.getItem('tasks') || '{}');
+      const today = date.toISOString().split('T')[0];
+      const todayTasks = tasks[today] || [];
+      if (todayTasks.length > 0) {
+        const completed = todayTasks.filter(t => t.completed).length;
+        document.getElementById('todayTask').textContent = 
+          `今日共 ${todayTasks.length} 个任务，已完成 ${completed} 个`;
+      }
+
+      const goals = JSON.parse(localStorage.getItem('goals') || '[]');
+      if (goals.length > 0) {
+        const completed = goals.filter(g => g.completed).length;
+        document.getElementById('goalProgress').textContent = 
+          `共 ${goals.length} 个目标，已完成 ${completed} 个`;
+      }
+    </script>
   </body>
 </html>
-<!--在 HTML 中，class属性可以同时写多个类名，
-只需要用空格隔开即可。浏览器会把这三个类的样式规则叠加应用到这个元素上。-->
-<!--横向默认，不用特别写-->
-
-
-
