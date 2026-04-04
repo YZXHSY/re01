@@ -88,6 +88,20 @@ body {
   margin-bottom: 40px;
 }
 
+.hero .mascot {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+  object-fit: cover;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s;
+}
+
+.hero .mascot:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
 .hero h1 {
   font-size: 32px;
   margin-bottom: 8px;
